@@ -1,0 +1,850 @@
+/* ==========================================================================
+   Motion Architecture — Reusable Reveal System, Preloader, Timeline & Loops
+   Only transform, opacity & clip-path are animated. Mobile (<900px) reduces
+   distances by 50%; prefers-reduced-motion reduces to 0.3s opacity fades.
+   ========================================================================== */
+
+:root {
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-hover: cubic-bezier(0.65, 0, 0.35, 1);
+  --reveal-duration: 0.9s;
+  --reveal-y: 40px;
+  --reveal-x: 60px;
+  --card-y: 60px;
+}
+
+@media (max-width: 899px) {
+  :root {
+    --reveal-y: 20px;
+    --reveal-x: 30px;
+    --card-y: 30px;
+  }
+
+  .hero-content-layer,
+  .hero-canvas--ribbon,
+  .nova-showcase-perspective {
+    transform: none;
+    opacity: 1;
+  }
+
+  .nova-showcase-frame {
+    --nova-rx: 0deg;
+  }
+
+  .about-portrait-img {
+    --portrait-y: 0px;
+  }
+
+  [data-parallax] {
+    --parallax-y: 0px;
+  }
+}
+
+/* ---------------- Hero Canvas, Preloader & Header Entry ---------------- */
+.js .hero .hero-canvas {
+  opacity: 0;
+  transition: opacity 1.5s var(--ease-reveal);
+}
+
+.js .hero.is-hero-ready .hero-canvas {
+  opacity: 1;
+}
+
+.hero-canvas--ribbon {
+  transform: translate3d(0, var(--ribbon-y, 0px), 0) scale(var(--ribbon-scale, 1));
+}
+
+.hero-content-layer {
+  transform: translate3d(0, var(--hero-y, 0px), 0);
+  opacity: var(--hero-op, 1);
+}
+
+.js .site-header .header-inner {
+  opacity: 0;
+  transform: translateY(-100%);
+  transition:
+    opacity 0.8s var(--ease-reveal),
+    transform 0.8s var(--ease-reveal);
+}
+
+.js .site-header.is-nav-ready .header-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------------- Hero Timeline Stages ---------------- */
+.hero-line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+
+.hero-line-inner {
+  display: block;
+}
+
+.js [data-hero-line] {
+  opacity: 0;
+  transform: translateY(110%);
+}
+
+.js [data-hero-line].is-line-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.js [data-hero-step] {
+  opacity: 0;
+  transition:
+    opacity 0.9s var(--ease-reveal),
+    transform 0.95s var(--ease-reveal);
+}
+
+.js .hero-eyebrow[data-hero-step],
+.js .hero-description[data-hero-step] {
+  transform: translateY(var(--reveal-y));
+}
+
+.js .hero-actions[data-hero-step] {
+  opacity: 1;
+}
+
+.js .hero-actions[data-hero-step] .btn {
+  opacity: 0;
+  transform: scale(0.92);
+  transition:
+    opacity 0.8s var(--ease-reveal),
+    transform 0.85s var(--ease-reveal),
+    background-color 0.3s var(--ease-hover),
+    border-color 0.3s var(--ease-hover),
+    color 0.3s var(--ease-hover);
+}
+
+.js .hero-hud-stack[data-hero-step] {
+  transform: translateY(-50%);
+}
+
+.js .hero-diag-line[data-hero-step] {
+  transform: rotate(32deg);
+}
+
+.js .hero-orbit-ring[data-hero-step] {
+  transform: rotate(-20deg);
+  transition: opacity 0.9s var(--ease-reveal);
+}
+
+.js .scroll-down-btn[data-hero-step] {
+  transform: translateX(-50%);
+}
+
+/* Stage Delays inside Hero Timeline */
+.js .hero.is-hero-ready [data-hero-step='1'] {
+  transition-delay: 0.08s;
+}
+
+.js .hero.is-hero-ready [data-hero-step='5'] {
+  transition-delay: 0.56s;
+}
+
+.js .hero.is-hero-ready [data-hero-step='6'] .btn:nth-child(1) {
+  transition-delay: 0.68s;
+}
+
+.js .hero.is-hero-ready [data-hero-step='6'] .btn:nth-child(2) {
+  transition-delay: 0.78s;
+}
+
+.js .hero.is-hero-ready [data-hero-step='7'] {
+  transition-delay: 0.85s;
+}
+
+.js .hero.is-hero-ready [data-hero-step='8'] {
+  transition-delay: 0.9s;
+}
+
+.js .hero.is-hero-ready [data-hero-step='9'] {
+  transition-delay: 0.96s;
+}
+
+.js .hero.is-hero-ready [data-hero-step],
+.js .hero.is-hero-ready .hero-actions[data-hero-step] .btn {
+  opacity: 1;
+}
+
+.js .hero.is-hero-ready .hero-eyebrow[data-hero-step],
+.js .hero.is-hero-ready .hero-description[data-hero-step] {
+  transform: translateY(0);
+}
+
+.js .hero.is-hero-ready .hero-actions[data-hero-step] .btn {
+  transform: scale(1);
+}
+
+.js .hero.is-hero-settled .hero-actions .btn,
+.js .hero.is-hero-settled .scroll-down-btn {
+  transition-delay: 0s;
+}
+
+/* ---------------- Reusable [data-reveal] System ---------------- */
+.js [data-reveal] {
+  transition:
+    opacity var(--reveal-duration) var(--ease-reveal) var(--reveal-delay, 0s),
+    transform var(--reveal-duration) var(--ease-reveal) var(--reveal-delay, 0s),
+    clip-path 1.05s var(--ease-reveal) var(--reveal-delay, 0s);
+}
+
+.js [data-reveal='fade-in'] {
+  opacity: 0;
+}
+
+.js [data-reveal='fade-up'] {
+  opacity: 0;
+  transform: translateY(var(--reveal-y));
+}
+
+.js [data-reveal='fade-left'] {
+  opacity: 0;
+  transform: translateX(calc(var(--reveal-x) * -1));
+}
+
+.js [data-reveal='fade-right'] {
+  opacity: 0;
+  transform: translateX(var(--reveal-x));
+}
+
+.js [data-reveal='scale-in'] {
+  opacity: 0;
+  transform: scale(0.92);
+}
+
+.js [data-reveal='pop'] {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.js [data-reveal='mask'] {
+  opacity: 0;
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(20px);
+}
+
+.js [data-reveal='mask-up'] {
+  clip-path: inset(100% 0 0 0);
+}
+
+.js [data-reveal='mask-left'] {
+  clip-path: inset(0 100% 0 0);
+}
+
+.js [data-reveal='scale-x'] {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.js .service-card[data-reveal='fade-up'] {
+  transform: translateY(var(--card-y)) rotate(2deg);
+}
+
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 0 0);
+}
+
+.js .about-portrait-backdrop[data-reveal='mask-left'].is-visible {
+  transform: skewX(-6deg);
+}
+
+.js .service-card[data-reveal='fade-up'].is-visible {
+  transform: translateY(0) rotate(0deg);
+}
+
+.js [data-reveal].is-settled {
+  transition-delay: 0s;
+}
+
+/* Service Card hover restore after reveal settles */
+.js .service-card.is-settled {
+  transition: transform 0.3s var(--ease-hover);
+}
+
+.js .service-card.is-settled:hover {
+  transform: translateY(-8px);
+}
+
+/* Service Card SVG stroke-dasharray icon draw (plays once on reveal) */
+.js .service-card__icon path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset 0.9s var(--ease-reveal) calc(var(--reveal-delay, 0s) + 0.25s);
+}
+
+.js .service-card.is-visible .service-card__icon path {
+  stroke-dashoffset: 0;
+}
+
+/* ---------------- Split Text Mask Reveals ([data-split]) ---------------- */
+.split-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+
+.split-word {
+  display: inline-block;
+}
+
+.js [data-split='lines'] .split-word {
+  transform: translateY(110%);
+  transition: transform 0.95s var(--ease-reveal) calc(var(--reveal-delay, 0s) + var(--word-i, 0) * 0.06s);
+}
+
+.js [data-split='lines'].is-visible .split-word {
+  transform: translateY(0);
+}
+
+.js [data-split='lines'].is-visible [data-overshoot] .split-word {
+  animation: wordOvershoot 0.95s var(--ease-reveal) calc(var(--reveal-delay, 0s) + var(--word-i, 0) * 0.06s) both;
+}
+
+/* About bio inline line-by-line fade-up */
+.bio-word {
+  display: inline-block;
+}
+
+.js [data-split='bio-lines'] .bio-word {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.8s var(--ease-reveal) calc(var(--reveal-delay, 0s) + var(--line-i, 0) * 0.08s),
+    transform 0.85s var(--ease-reveal) calc(var(--reveal-delay, 0s) + var(--line-i, 0) * 0.08s);
+}
+
+.js [data-split='bio-lines'].is-visible .bio-word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------------- NOVA Showcase Cinema Scale & Hover Label ---------------- */
+.js .nova-showcase-frame[data-reveal='mask-up'] .nova-showcase-img {
+  transform: scale(1.2);
+  transition: transform 1.15s var(--ease-reveal) var(--reveal-delay, 0s);
+}
+
+.js .nova-showcase-frame[data-reveal='mask-up'].is-visible .nova-showcase-img {
+  transform: scale(1);
+}
+
+.nova-showcase-frame.is-settled {
+  transition:
+    transform 0.3s var(--ease-hover),
+    border-color 0.3s var(--ease-hover);
+}
+
+.nova-showcase-frame.is-settled:hover .nova-showcase-img {
+  transform: scale(1.02);
+}
+
+.nova-cursor-badge {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.15rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-lime);
+  color: var(--color-ink-dark);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateX(14px);
+  pointer-events: none;
+  transition:
+    opacity 0.3s var(--ease-hover),
+    transform 0.3s var(--ease-hover);
+}
+
+.nova-showcase-frame:hover .nova-cursor-badge,
+.nova-showcase-frame:focus-visible .nova-cursor-badge {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.nova-cursor-badge__arrow {
+  display: inline-block;
+  animation: badgeArrowLoop 1.5s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.nova-showcase-frame.is-inview .nova-cursor-badge__arrow {
+  animation-play-state: running;
+}
+
+/* ---------------- About Portrait Scale & Skill Slashes ---------------- */
+.js .about-portrait-backdrop .about-portrait-img {
+  transform: skewX(6deg) translateY(var(--portrait-y, 0px)) scale(1.15);
+  transition: transform 1.1s var(--ease-reveal) 0.15s;
+}
+
+.js .about-portrait-backdrop.is-visible .about-portrait-img {
+  transform: skewX(6deg) translateY(var(--portrait-y, 0px)) scale(1.06);
+}
+
+.js .about-portrait-backdrop.is-settled .about-portrait-img {
+  transition: transform 0.12s linear;
+}
+
+.js .skill-item .skill-item__slash {
+  transform: skewX(-18deg) scaleY(0) rotate(-14deg);
+  transition: transform 0.8s var(--ease-reveal) calc(var(--reveal-delay, 0s) + 0.1s);
+}
+
+.js .skill-item.is-visible .skill-item__slash {
+  transform: skewX(-18deg) scaleY(1) rotate(0deg);
+}
+
+/* ---------------- Contact Underline ---------------- */
+.contact-something-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.contact-something-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0.04em;
+  width: 100%;
+  height: 4px;
+  background-color: var(--color-ink-dark);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.85s var(--ease-reveal) 0.35s;
+}
+
+.js #contact-title.is-visible .contact-something-underline::after {
+  transform: scaleX(1);
+}
+
+/* ---------------- Process Sequential 2.2s Timeline ---------------- */
+.js .process-step__circle {
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity 0.55s var(--ease-reveal),
+    transform 0.6s var(--ease-reveal),
+    background-color 0.3s var(--ease-hover),
+    color 0.3s var(--ease-hover);
+}
+
+.js .process-step__ring circle {
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset 0.8s var(--ease-reveal);
+}
+
+.js .process-step__num {
+  transform: translateY(105%);
+  transition: transform 0.55s var(--ease-reveal);
+}
+
+.js .process-step__connector {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s var(--ease-reveal);
+}
+
+.js .process-step__title,
+.js .process-step__text {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.7s var(--ease-reveal),
+    transform 0.75s var(--ease-reveal);
+}
+
+.js #process-timeline.is-visible .process-step__circle {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.js #process-timeline.is-visible .process-step__ring circle {
+  stroke-dashoffset: 0;
+}
+
+.js #process-timeline.is-visible .process-step__num,
+.js #process-timeline.is-visible .process-step__title,
+.js #process-timeline.is-visible .process-step__text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.js #process-timeline.is-visible .process-step__connector {
+  transform: scaleX(1);
+}
+
+/* Timeline Step 1 -> Line 1 -> Step 2 -> Line 2 -> Step 3 -> Line 3 -> Step 4 (~2.2s total) */
+.js #process-timeline.is-visible [data-process-step='0'] .process-step__circle,
+.js #process-timeline.is-visible [data-process-step='0'] .process-step__ring circle { transition-delay: 0s; }
+.js #process-timeline.is-visible [data-process-step='0'] .process-step__num { transition-delay: 0.1s; }
+.js #process-timeline.is-visible [data-process-step='0'] .process-step__title { transition-delay: 0.18s; }
+.js #process-timeline.is-visible [data-process-step='0'] .process-step__text { transition-delay: 0.25s; }
+.js #process-timeline.is-visible [data-process-step='0'] .process-step__connector { transition-delay: 0.35s; }
+
+.js #process-timeline.is-visible [data-process-step='1'] .process-step__circle,
+.js #process-timeline.is-visible [data-process-step='1'] .process-step__ring circle { transition-delay: 0.55s; }
+.js #process-timeline.is-visible [data-process-step='1'] .process-step__num { transition-delay: 0.65s; }
+.js #process-timeline.is-visible [data-process-step='1'] .process-step__title { transition-delay: 0.73s; }
+.js #process-timeline.is-visible [data-process-step='1'] .process-step__text { transition-delay: 0.8s; }
+.js #process-timeline.is-visible [data-process-step='1'] .process-step__connector { transition-delay: 0.9s; }
+
+.js #process-timeline.is-visible [data-process-step='2'] .process-step__circle,
+.js #process-timeline.is-visible [data-process-step='2'] .process-step__ring circle { transition-delay: 1.1s; }
+.js #process-timeline.is-visible [data-process-step='2'] .process-step__num { transition-delay: 1.2s; }
+.js #process-timeline.is-visible [data-process-step='2'] .process-step__title { transition-delay: 1.28s; }
+.js #process-timeline.is-visible [data-process-step='2'] .process-step__text { transition-delay: 1.35s; }
+.js #process-timeline.is-visible [data-process-step='2'] .process-step__connector { transition-delay: 1.45s; }
+
+.js #process-timeline.is-visible [data-process-step='3'] .process-step__circle,
+.js #process-timeline.is-visible [data-process-step='3'] .process-step__ring circle { transition-delay: 1.65s; }
+.js #process-timeline.is-visible [data-process-step='3'] .process-step__num { transition-delay: 1.75s; }
+.js #process-timeline.is-visible [data-process-step='3'] .process-step__title { transition-delay: 1.83s; }
+.js #process-timeline.is-visible [data-process-step='3'] .process-step__text { transition-delay: 1.9s; }
+
+.js #process-timeline.is-settled .process-step__circle {
+  transition-delay: 0s;
+}
+
+.js #process-timeline.is-settled .process-step:hover .process-step__circle {
+  transform: scale(1.08);
+}
+
+/* ---------------- Viewport-Gated Continuous Loops (Paused Offscreen) ---------------- */
+.scroll-down-btn svg {
+  animation: scrollCueBounce 1.6s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.hero.is-inview .scroll-down-btn svg {
+  animation-play-state: running;
+}
+
+.hero-lime-spark {
+  animation: limeSparkPulse 2.8s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.hero.is-inview .hero-lime-spark {
+  animation-play-state: running;
+}
+
+.hero-orbit-ring {
+  animation: orbitSlowRotate 60s linear infinite;
+  animation-play-state: paused;
+}
+
+.hero.is-inview .hero-orbit-ring {
+  animation-play-state: running;
+}
+
+.anim-float-loop {
+  animation: glassFloatLoop 6s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+.anim-float-loop.is-inview {
+  animation-play-state: running;
+}
+
+.anim-sway-loop {
+  animation: portraitSwayLoop 8s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+.anim-sway-loop.is-inview {
+  animation-play-state: running;
+}
+
+.btn-pulse-wrap::after {
+  animation: contactPulseRing 2.5s var(--ease-reveal) infinite;
+  animation-play-state: paused;
+}
+
+.btn-pulse-wrap.is-inview::after {
+  animation-play-state: running;
+}
+
+.hero-ribbon-css-fallback__band--a {
+  animation: ribbonCssDriftA 18s ease-in-out infinite alternate;
+}
+
+.hero-ribbon-css-fallback__band--b {
+  animation: ribbonCssDriftB 22s ease-in-out infinite alternate;
+}
+
+/* ---------------- Modal Utility Classes ---------------- */
+.modal-kicker {
+  margin-bottom: 0.5rem;
+}
+
+.modal-preview-img {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  margin-bottom: 1.5rem;
+}
+
+.modal-lead {
+  max-width: none;
+  margin-bottom: 0;
+}
+
+/* ---------------- Keyframes ---------------- */
+@keyframes preloaderFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scrollCueBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes limeSparkPulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.22);
+  }
+}
+
+@keyframes orbitSlowRotate {
+  0% {
+    transform: rotate(-20deg);
+  }
+  100% {
+    transform: rotate(340deg);
+  }
+}
+
+@keyframes serviceIconBounce {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  45% {
+    transform: translateY(-5px) scale(1.1);
+  }
+}
+
+@keyframes badgeArrowLoop {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(3px, -3px);
+  }
+}
+
+@keyframes wordOvershoot {
+  0% {
+    transform: translateY(110%) scale(0.96);
+  }
+  72% {
+    transform: translateY(0) scale(1.06);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes glassFloatLoop {
+  0% {
+    transform: translate3d(0, calc(var(--parallax-y, 0px) - 12px), 0) rotate(-3deg);
+  }
+  100% {
+    transform: translate3d(0, calc(var(--parallax-y, 0px) + 12px), 0) rotate(3deg);
+  }
+}
+
+@keyframes portraitSwayLoop {
+  0% {
+    transform: skewX(-6deg) rotate(-1.5deg);
+  }
+  100% {
+    transform: skewX(-6deg) rotate(1.5deg);
+  }
+}
+
+@keyframes contactPulseRing {
+  0% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes ribbonCssDriftA {
+  0% {
+    transform: rotate(-8deg) translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: rotate(12deg) translate3d(-24px, -18px, 0) scale(1.06);
+  }
+}
+
+@keyframes ribbonCssDriftB {
+  0% {
+    transform: rotate(14deg) translate3d(0, 0, 0) scale(1.04);
+  }
+  100% {
+    transform: rotate(-10deg) translate3d(18px, 22px, 0) scale(0.96);
+  }
+}
+
+/* ---------------- Reduced Motion Accessibility (0.3s Opacity Fade Only) ---------------- */
+@media (prefers-reduced-motion: reduce) {
+  .preloader {
+    display: none;
+  }
+
+  .scroll-down-btn svg,
+  .hero-lime-spark,
+  .hero-orbit-ring,
+  .anim-float-loop,
+  .anim-sway-loop,
+  .btn-pulse-wrap::after,
+  .nova-cursor-badge__arrow,
+  .hero-ribbon-css-fallback__band--a,
+  .hero-ribbon-css-fallback__band--b {
+    animation: none;
+  }
+
+  .js [data-hero-line],
+  .js [data-hero-step],
+  .js .hero-actions[data-hero-step] .btn,
+  .js .site-header .header-inner,
+  .js [data-reveal],
+  .js [data-split='lines'] .split-word,
+  .js [data-split='bio-lines'] .bio-word,
+  .js #process-timeline .process-step__circle,
+  .js #process-timeline .process-step__title,
+  .js #process-timeline .process-step__text,
+  .js #process-timeline .process-step__num {
+    transform: none;
+    clip-path: none;
+    transition: opacity 0.3s ease;
+    transition-delay: 0s;
+  }
+
+  .js .about-portrait-backdrop,
+  .js .about-portrait-backdrop.is-visible {
+    transform: skewX(-6deg);
+    clip-path: none;
+  }
+
+  .js .about-portrait-backdrop .about-portrait-img {
+    transform: skewX(6deg);
+    transition: opacity 0.3s ease;
+  }
+
+  .js .nova-showcase-frame[data-reveal='mask-up'] .nova-showcase-img,
+  .js .service-card__icon path,
+  .js .process-step__ring circle,
+  .js .process-step__connector,
+  .contact-something-underline::after {
+    transform: none;
+    stroke-dashoffset: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .js .skill-item .skill-item__slash {
+    transform: skewX(-18deg);
+  }
+
+  .js .hero-hud-stack[data-hero-step] {
+    transform: translateY(-50%);
+  }
+
+  .js .hero-diag-line[data-hero-step] {
+    transform: rotate(32deg);
+  }
+
+  .js .scroll-down-btn[data-hero-step] {
+    transform: translateX(-50%);
+  }
+
+  .btn,
+  .btn--fill-slide::before,
+  .btn__arrow,
+  .circle-icon-btn,
+  .circle-icon-btn svg,
+  .back-to-top,
+  .back-to-top svg,
+  .service-card,
+  .service-card::before,
+  .service-card__icon,
+  .service-card__arrow,
+  .nova-showcase-frame,
+  .nova-showcase-img,
+  .nova-cursor-badge,
+  .about-arrow-decor,
+  .skill-item__title,
+  .nav-link::after,
+  .footer-col__link::after,
+  .footer-col__arrow,
+  .mobile-drawer,
+  .modal-backdrop,
+  .modal-dialog {
+    transition: opacity 0.3s ease;
+  }
+}
+
+/* ============================================
+   FIX — NOVA E ABOUT
+   Desativa somente as duas máscaras problemáticas
+   ============================================ */
+
+/* NOVA — imagem do projeto */
+.js .nova-showcase-frame[data-reveal="mask-up"] {
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* ABOUT — fotografia */
+.js .about-portrait-backdrop[data-reveal="mask-left"] {
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Mantém as imagens visíveis */
+.nova-showcase-img,
+.about-portrait-img {
+  opacity: 1 !important;
+  visibility: visible !important;
+}

@@ -1,0 +1,90 @@
+/* ==========================================================================
+   Design Tokens — Andre Lucas Portfolio
+   ========================================================================== */
+
+:root {
+  /* Hero Shader Palette Tokens */
+  --bg: #050008;
+  --lime: #ccff00;
+  --pink: #ff2bb1;
+  --white: #f4f1ea;
+  --violet: #7a1fff;
+  --purple-deep: #2a0a5e;
+  --blue: #2f6bff;
+  --magenta: #e040ff;
+
+  /* Core Portfolio Palette */
+  --color-bg-black: #080808;
+  --color-surface-dark: #0e0e0e;
+  --color-surface-elevated: #141414;
+  --color-lime: #c7ff00;
+  --color-lime-hover: #d8ff4d;
+  --color-pink: #f04cb9;
+  --color-violet: #8225e8;
+  --color-cyan: #29d8ff;
+  --color-ivory: #f2f0e8;
+  --color-white: #ffffff;
+  --color-muted: #b9b9b9;
+  --color-ink-dark: #080808;
+  --color-ink-muted-light: #444440;
+
+  /* Borders & Hairlines */
+  --border-dark: rgba(255, 255, 255, 0.14);
+  --border-dark-strong: rgba(255, 255, 255, 0.34);
+  --border-light: rgba(8, 8, 8, 0.14);
+  --border-lime-subtle: rgba(199, 255, 0, 0.35);
+
+  /* Typography */
+  --font-hero: 'Bricolage Grotesque', 'Familjen Grotesk', 'Archivo Black', Helvetica, Arial, sans-serif;
+  --font-display: 'Anton', Impact, 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Fluid Type Scale */
+  --text-hero: clamp(2.55rem, 6.8vw, 6.5rem);
+  --text-section: clamp(2.35rem, 4.4vw, 4.35rem);
+  --text-footer-brand: clamp(3.5rem, 6.8vw, 6.75rem);
+  --text-card-title: clamp(1.4rem, 1.8vw, 1.75rem);
+  --text-nova-title: clamp(2.6rem, 4vw, 3.85rem);
+  --text-body-lg: clamp(1rem, 1.15vw, 1.1875rem);
+  --text-body: clamp(0.9375rem, 1vw, 1rem);
+  --text-label: 0.75rem;
+  --text-micro: 0.6875rem;
+
+  /* Spacing & Layout */
+  --container-max: 1360px;
+  --container-pad: clamp(1.25rem, 4vw, 4rem);
+  --section-pad-y: clamp(4.5rem, 8.5vw, 8.5rem);
+  --header-height: 78px;
+
+  /* Radii */
+  --radius-pill: 9999px;
+  --radius-card: 18px;
+  --radius-showcase: 22px;
+  --radius-portrait: 24px;
+
+  /* Glassmorphism Navigation Surface */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-hover: rgba(255, 255, 255, 0.065);
+  --glass-bg-scrolled: rgba(8, 8, 8, 0.74);
+
+  /* Unified Motion Design System */
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 220ms;
+  --duration-base: 320ms;
+  --duration-medium: 450ms;
+  --duration-slow: 750ms;
+  --duration-reveal: 750ms;
+  --duration-hero: 1100ms;
+
+  /* Z-index Scale */
+  --z-base: 1;
+  --z-decor: 2;
+  --z-content: 5;
+  --z-header: 50;
+  --z-drawer: 80;
+  --z-modal: 100;
+}

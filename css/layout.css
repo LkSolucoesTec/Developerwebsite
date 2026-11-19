@@ -1,0 +1,504 @@
+/* ==========================================================================
+   Page Sections, Grids & Spatial Rhythm
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+.section {
+  position: relative;
+  overflow-x: clip;
+  padding-block: var(--section-pad-y);
+}
+
+.section--black {
+  background-color: var(--color-bg-black);
+  color: var(--color-white);
+}
+
+.section--ivory {
+  background-color: var(--color-ivory);
+  color: var(--color-ink-dark);
+}
+
+.section--lime {
+  background-color: var(--color-lime);
+  color: var(--color-ink-dark);
+}
+
+/* ---------------- Header (Part 1 Editorial Bar) ---------------- */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-header);
+  background-color: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    transform 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.3s cubic-bezier(0.65, 0, 0.35, 1),
+    border-color 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.site-header.is-header-hidden {
+  transform: translateY(-100%);
+}
+
+.site-header.is-scrolled {
+  background-color: rgba(5, 0, 8, 0.84);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+.header-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: clamp(20px, 2.5vw, 40px) clamp(20px, 5vw, 80px);
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.brand-wordmark {
+  font-family: var(--font-hero);
+  font-size: clamp(1.15rem, 1.5vw, 1.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-rendering: optimizeLegibility;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.brand-wordmark__dot {
+  color: var(--lime);
+}
+
+.brand-divider {
+  width: 1px;
+  height: 44px;
+  background-color: rgba(255, 255, 255, 0.4);
+  flex-shrink: 0;
+}
+
+.brand-descriptor {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.35;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(244, 241, 234, 0.88);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.brand-rule {
+  height: 1px;
+  width: 160px;
+  flex: 0 1 160px;
+  margin-left: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 2.5vw, 2.75rem);
+  flex-shrink: 0;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 2.2vw, 2.25rem);
+}
+
+/* ---------------- Hero Section (100vw x 100vh, Canvas A + Canvas B + Content) ---------------- */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  background-color: var(--bg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 1;
+}
+
+@media (min-width: 900px) {
+  .hero {
+    position: sticky;
+    top: 0;
+  }
+
+  main > section:not(.hero),
+  .site-footer {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.hero-canvas--cloud {
+  z-index: 0;
+}
+
+.hero-canvas--ribbon {
+  z-index: 1;
+}
+
+.hero-content-layer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: clamp(78px, 10vh, 114px) clamp(20px, 5vw, 80px) clamp(82px, 10vh, 108px);
+}
+
+.hero-decor-vectors {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: min(100%, 55vw);
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: clamp(14px, 1.35vw, 22px);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: clamp(0.75rem, 1.5vh, 1.5rem);
+}
+
+.hero-eyebrow__num {
+  color: var(--lime);
+  font-weight: 700;
+}
+
+.hero-headline-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.hero-headline {
+  font-family: var(--font-hero);
+  font-weight: 800;
+  font-size: clamp(56px, min(9vw, 15vh), 150px);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-rendering: optimizeLegibility;
+}
+
+.hero-line-inner--pink {
+  color: var(--pink);
+}
+
+.hero-description {
+  max-width: 560px;
+  font-family: var(--font-hero);
+  font-size: clamp(16px, min(1.5vw, 2.5vh), 24px);
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--white);
+  margin-top: clamp(1rem, 2.2vh, 2rem);
+  text-rendering: optimizeLegibility;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  margin-top: clamp(22px, 3.2vh, 40px);
+}
+
+/* ---------------- Services Section ---------------- */
+.services-layout {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.78fr) minmax(0, 1.55fr);
+  align-items: center;
+  gap: clamp(2.5rem, 4vw, 4.5rem);
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+/* ---------------- Featured Work (NOVA) ---------------- */
+.nova-section {
+  position: relative;
+}
+
+.nova-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-base);
+  background:
+    radial-gradient(
+      circle at 58% 48%,
+      rgba(199, 255, 0, 0.08) 0%,
+      rgba(130, 37, 232, 0.14) 42%,
+      rgba(8, 8, 8, 0) 70%
+    ),
+    radial-gradient(
+      circle at 6% 96%,
+      rgba(199, 255, 0, 0.14) 0%,
+      rgba(8, 8, 8, 0) 38%
+    );
+}
+
+.nova-layout {
+  position: relative;
+  z-index: var(--z-content);
+  display: grid;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.28fr);
+  align-items: center;
+  gap: clamp(2.5rem, 5vw, 5rem);
+}
+
+.nova-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.nova-rule {
+  width: 48px;
+  height: 3px;
+  background-color: var(--color-lime);
+  margin-block: 1.5rem;
+}
+
+.nova-description {
+  font-size: var(--text-body);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.84);
+  max-width: 38ch;
+  margin-bottom: 1.25rem;
+}
+
+.nova-classification {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-lime);
+  margin-bottom: 1.25rem;
+}
+
+.nova-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-bottom: 2rem;
+}
+
+/* ---------------- About Section ---------------- */
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.85fr) minmax(240px, 0.72fr) minmax(300px, 1.15fr);
+  align-items: center;
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+}
+
+.about-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.about-bio {
+  font-size: clamp(1.0625rem, 1.35vw, 1.3125rem);
+  line-height: 1.55;
+  font-weight: 400;
+  color: var(--color-ink-dark);
+  max-width: 40ch;
+}
+
+.about-skills {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  padding-top: 0.5rem;
+}
+
+/* ---------------- Process Section ---------------- */
+.process-layout {
+  position: relative;
+  z-index: var(--z-content);
+  display: grid;
+  grid-template-columns: minmax(250px, 0.78fr) minmax(0, 1.65fr);
+  align-items: center;
+  gap: clamp(2.5rem, 4.5vw, 4.5rem);
+}
+
+.process-timeline {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+/* ---------------- Contact Section ---------------- */
+.contact-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-layout {
+  position: relative;
+  z-index: var(--z-content);
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(300px, 0.95fr);
+  align-items: center;
+  gap: clamp(2.5rem, 5vw, 5rem);
+}
+
+.contact-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding-right: clamp(0rem, 4vw, 3.5rem);
+}
+
+.contact-description {
+  font-size: clamp(1rem, 1.2vw, 1.1875rem);
+  line-height: 1.58;
+  color: var(--color-ink-dark);
+  max-width: 44ch;
+}
+
+.contact-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.contact-direct-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 2rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(8, 8, 8, 0.18);
+  width: 100%;
+}
+
+/* ---------------- Footer ---------------- */
+.site-footer {
+  position: relative;
+  background-color: var(--color-bg-black);
+  color: var(--color-white);
+  padding-top: clamp(4.5rem, 7vw, 6.5rem);
+  padding-bottom: clamp(2rem, 4vw, 3rem);
+  overflow: hidden;
+}
+
+.footer-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 92% 40%,
+    rgba(130, 37, 232, 0.24) 0%,
+    rgba(8, 8, 8, 0) 45%
+  );
+}
+
+.footer-top {
+  position: relative;
+  z-index: var(--z-content);
+  display: grid;
+  grid-template-columns: minmax(280px, 1.35fr) auto auto minmax(180px, 0.7fr);
+  align-items: start;
+  gap: clamp(2rem, 4vw, 4rem);
+  padding-bottom: clamp(3rem, 5vw, 4.5rem);
+}
+
+.footer-brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.footer-divider {
+  width: 1px;
+  height: 76px;
+  background-color: rgba(255, 255, 255, 0.22);
+  flex-shrink: 0;
+}
+
+.footer-role {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.footer-bottom {
+  position: relative;
+  z-index: var(--z-content);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border-dark);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
